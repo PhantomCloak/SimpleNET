@@ -12,19 +12,24 @@ namespace SimpleNET
 
         public static bool SendPackage(Socket socket, byte[] buffer)
         {
+            return SendPackage(socket, buffer, buffer.Length);
+        }
+
+        public static bool SendPackage(Socket socket, byte[] buffer, int count)
+        {
             if (buffer.Length > MtuSize)
                 return false;
 
-            var tmpBuff = new byte[sizeof(int) + buffer.Length];
+            var tmpBuff = new byte[sizeof(int) + count];
 
-            var header = BitConverter.GetBytes(buffer.Length);
+            var headerSizeInBytes = BitConverter.GetBytes(count);
 
-            Buffer.BlockCopy(header, 0, tmpBuff, 0, sizeof(int));
-            Buffer.BlockCopy(buffer, 0, tmpBuff, sizeof(int), buffer.Length);
+            Buffer.BlockCopy(headerSizeInBytes, 0, tmpBuff, 0, sizeof(int));
+            Buffer.BlockCopy(buffer, 0, tmpBuff, sizeof(int), count);
 
             try
             {
-                socket.Send(tmpBuff, 0, sizeof(int) + buffer.Length, SocketFlags.None);
+                socket.Send(tmpBuff, 0, sizeof(int) + count, SocketFlags.None);
             }
             catch (Exception)
             {
@@ -59,7 +64,7 @@ namespace SimpleNET
                 while (bytesReaded != packageSize)
                 {
                     int resultRead = socket.Receive(buffer,
-                                          sizeof(int) + bytesReaded, // offset
+                                          bytesReaded, // offset
                                           packageSize - bytesReaded, // remaining
                                           SocketFlags.None);
 
