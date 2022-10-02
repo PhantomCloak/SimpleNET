@@ -11,6 +11,10 @@ namespace MyApp // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
+            if(Debugger.IsAttached)
+            {
+                ServerExample();
+            }
             Console.WriteLine("to try server enter s. to try client enter c.");
             var input = Console.ReadLine();
 
@@ -64,8 +68,9 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
                     if (packageSize == 0 || packageSize == -1)
                         continue;
+                    int readOffset = 0;
 
-                    var msgStr = Encoding.ASCII.GetString(buffer);
+                    var msgStr = Serializer.ReadString(buffer, ref readOffset);
 
                     Console.WriteLine("Client says: " + msgStr + " size: " + packageSize);
                 }
@@ -81,9 +86,11 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
             client.Connect("127.0.0.1", 22003);
 
+            var buffer = new byte[512];
             while (true)
             {
                 Thread.Sleep(16);
+                int writeOffset = 0;
 
                 var isAlive = client.CheckConnectionAlive();
                 if (!isAlive)
@@ -93,7 +100,10 @@ namespace MyApp // Note: actual namespace depends on the project name.
                 }
 
                 var msg = Console.ReadLine();
-                var result = IO.SendPackage(client.Sock, Encoding.ASCII.GetBytes(msg));
+
+                Serializer.WriteString(msg, ref buffer, ref writeOffset);
+
+                IO.SendPackage(client.Sock, buffer, writeOffset);
             }
         }
     }
