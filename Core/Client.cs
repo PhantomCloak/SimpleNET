@@ -14,7 +14,7 @@ namespace SimpleNET
             Sock.Connect(ep);
         }
 
-        public void ShutdownServer()
+        public void Shutdown()
         {
             Sock.Close();
         }
