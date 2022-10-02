@@ -79,7 +79,7 @@ while (true)
 ```
 ## For C++
 
-## Client Setup
+### Client Setup
 ```cpp
 int main() {
   Client *client = new Client();
