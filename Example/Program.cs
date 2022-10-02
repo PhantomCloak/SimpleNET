@@ -11,10 +11,6 @@ namespace MyApp // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            if(Debugger.IsAttached)
-            {
-                ServerExample();
-            }
             Console.WriteLine("to try server enter s. to try client enter c.");
             var input = Console.ReadLine();
 
@@ -68,8 +64,8 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
                     if (packageSize == 0 || packageSize == -1)
                         continue;
-                    int readOffset = 0;
 
+                    int readOffset = 0;
                     var msgStr = Serializer.ReadString(buffer, ref readOffset);
 
                     Console.WriteLine("Client says: " + msgStr + " size: " + packageSize);
