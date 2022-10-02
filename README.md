@@ -1,5 +1,5 @@
 # SimpleNET
-Simple TCP library written in both C++ and C# to stop reinventing the simple IPC or Transport, It's justly really thin wrapper between native API with some extra features
+Simple TCP library written in both C++ and C#, It's justly really thin wrapper between native API with some extra features
 
 ### Features
 - Detecting connection drop
