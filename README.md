@@ -1,4 +1,4 @@
-# SimpleNET
+# SimpleTCP
 Simple TCP library written in both C++ and C#, It's justly really thin wrapper between native API with some extra features.
 
 
