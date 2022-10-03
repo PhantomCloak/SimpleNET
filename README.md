@@ -112,10 +112,5 @@ int main() {
     Serializer::WriteString(input, buffer, &writeOffset);
     IO::SendPackage(client->socketHandle, buffer, writeOffset);
   }
-
-  client->Shutdown();
-
-  delete[] buffer;
-  delete[] input;
 }
 ```
