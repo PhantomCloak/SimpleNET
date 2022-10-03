@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -12,7 +13,7 @@ namespace SimpleNET
         public Server(int port)
         {
             srvPort = port;
-            IPEndPoint ep = new(IPAddress.Any, port);
+            var ep = new IPEndPoint(IPAddress.Any, port);
             listener = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             clients = new List<Socket>();
             listener.Bind(ep);

@@ -9,7 +9,7 @@ namespace SimpleNET
 
         public void Connect(string address, int port)
         {
-            IPEndPoint ep = new(IPAddress.Parse(address), port);
+            var ep = new IPEndPoint(IPAddress.Parse(address), port);
             Sock = new Socket(ep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             Sock.Connect(ep);
         }
