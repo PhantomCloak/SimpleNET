@@ -38,6 +38,7 @@ namespace SimpleNET
                 return false;
 
             newConnection = listener.Accept();
+            newConnection.Blocking = false;
             clients.Add(newConnection);
 
             return true;
