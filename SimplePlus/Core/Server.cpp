@@ -1,6 +1,8 @@
 #include "Server.h"
 #include <unistd.h>
 
+static char* keepAliveBuffer = new char[0];
+
 Server::Server(int port) {
     srvPort = port;
 }
@@ -23,12 +25,14 @@ int Server::StartServer() {
 
     if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
         printf("socket bind failed...\n");
+        close(sockfd);
         return -1;
     } else
         printf("Socket successfully binded..\n");
 
     if ((listen(sockfd, 5)) != 0) {
         printf("Listen failed...\n");
+        close(sockfd);
         return -1;
     } else
         printf("Server listening..\n");
@@ -78,8 +82,7 @@ bool Server::PollForConnection(sock_h* newClient) {
 }
 
 bool Server::CheckConnectionAlive(sock_h client) const {
-    char* keepAliveBuffer[0];
-    return IO::SendPackage(client, keepAliveBuffer[0], 0);
+    return IO::SendPackage(client, keepAliveBuffer, 0);
 }
 
 void Server::Shutdown() {
