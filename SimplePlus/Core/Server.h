@@ -18,7 +18,7 @@
 class Server {
     public:
     Server(int port);
-    void StartServer();
+    int StartServer();
     bool PollForConnection(sock_h* newClient);
     bool CheckConnectionAlive(sock_h client) const;
     void Shutdown();

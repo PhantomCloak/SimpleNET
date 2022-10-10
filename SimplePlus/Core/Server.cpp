@@ -1,58 +1,52 @@
 #include "Server.h"
 #include <unistd.h>
 
-Server::Server(int port)
-{
-  srvPort = port;
+Server::Server(int port) {
+    srvPort = port;
 }
 
-void Server::StartServer() {
+int Server::StartServer() {
     int connfd, len;
     struct sockaddr_in servaddr;
 
-    // socket create and verification
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1) {
         printf("socket creation failed...\n");
-        exit(0);
+        return -1;
     } else
         printf("Socket successfully created..\n");
     bzero(&servaddr, sizeof(servaddr));
 
-    // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(srvPort);
 
-    // Binding newly created socket to given IP and verification
     if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
         printf("socket bind failed...\n");
-        exit(0);
+        return -1;
     } else
         printf("Socket successfully binded..\n");
 
-    // Now server is ready to listen and verification
     if ((listen(sockfd, 5)) != 0) {
         printf("Listen failed...\n");
-        exit(0);
+        return -1;
     } else
         printf("Server listening..\n");
 
     memset(&fds, 0, sizeof(fds));
     fds[0].fd = sockfd;
-    fds[0].events = POLLIN; // check if data to read
-                            //
+    fds[0].events = POLLIN;
 
     struct timeval timeout;
-   timeout.tv_sec = 4;
-   timeout.tv_usec = 0;
- 
-   //apply send timeout socket options
-   setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(struct timeval));
- 
-   //set output buffer size so that send blocks
-   int buffersize = 2;
-   setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &buffersize, 4);
+    timeout.tv_sec = 4;
+    timeout.tv_usec = 0;
+
+    setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(struct timeval));
+
+    int buffersize = 2;
+    setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &buffersize, 4);
+
+    return 0;
 }
 
 bool Server::PollForConnection(sock_h* newClient) {
@@ -88,7 +82,6 @@ bool Server::CheckConnectionAlive(sock_h client) const {
     return IO::SendPackage(client, keepAliveBuffer, 0);
 }
 
-void Server::Shutdown()
-{
-  close(sockfd);
+void Server::Shutdown() {
+    close(sockfd);
 }
