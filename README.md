@@ -90,6 +90,7 @@ int main() {
     std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
     if (server -> PollForConnection(&newClient)) {
+      printf("New client connected\n");
       clients.push_back(newClient);
     }
 
