@@ -1,7 +1,12 @@
 #include "Server.h"
 #include <unistd.h>
 
-void Server::StartServer(int port) {
+Server::Server(int port)
+{
+  srvPort = port;
+}
+
+void Server::StartServer() {
     int connfd, len;
     struct sockaddr_in servaddr;
 
@@ -17,7 +22,7 @@ void Server::StartServer(int port) {
     // assign IP, PORT
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(port);
+    servaddr.sin_port = htons(srvPort);
 
     // Binding newly created socket to given IP and verification
     if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
@@ -81,4 +86,9 @@ bool Server::PollForConnection(sock_h* newClient) {
 bool Server::CheckConnectionAlive(sock_h client) const {
     char* keepAliveBuffer = new char[0];
     return IO::SendPackage(client, keepAliveBuffer, 0);
+}
+
+void Server::Shutdown()
+{
+  close(sockfd);
 }

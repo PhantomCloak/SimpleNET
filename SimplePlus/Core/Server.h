@@ -17,13 +17,15 @@
 
 class Server {
     public:
-    void StartServer(int port);
+    Server(int port);
+    void StartServer();
     bool PollForConnection(sock_h* newClient);
     bool CheckConnectionAlive(sock_h client) const;
-    sock_h Accept();
+    void Shutdown();
     sock_h sockfd;
 
     private:
+    int srvPort;
     struct pollfd fds[200];
 };
 #endif
