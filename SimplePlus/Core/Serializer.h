@@ -9,9 +9,9 @@
 #include <string.h>
 
 struct Serializer {
-  static int ReadInt(const char *data, int *readCtx);
-  static float ReadFloat(const char *data, int *readCtx);
-  static double ReadDouble(const char *data, int *readCtx);
+  static const int ReadInt(const char *data, int *readCtx);
+  static const float ReadFloat(const char *data, int *readCtx);
+  static const double ReadDouble(const char *data, int *readCtx);
   static const char *ReadString(const char *data, int *readCtx);
 
   static void WriteInt(int value, const char *data, int *writeCtx);

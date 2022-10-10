@@ -78,8 +78,8 @@ bool Server::PollForConnection(sock_h* newClient) {
 }
 
 bool Server::CheckConnectionAlive(sock_h client) const {
-    char* keepAliveBuffer = new char[0];
-    return IO::SendPackage(client, keepAliveBuffer, 0);
+    char* keepAliveBuffer[0];
+    return IO::SendPackage(client, keepAliveBuffer[0], 0);
 }
 
 void Server::Shutdown() {

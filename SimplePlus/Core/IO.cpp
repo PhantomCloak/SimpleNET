@@ -2,41 +2,32 @@
 #include <cstdio>
 
 static int MaxPackageSize = 4096;
+static char * sendTmpBuffer = new char[1470];
+static char * recvHeaderBuffer = new char[sizeof(int)];
 
 bool IO::SendPackage(int socketHandle, char* buffer) {
     return SendPackage(socketHandle, buffer, strlen(buffer));
 }
 
 bool IO::SendPackage(int socketHandle, char* buffer, int count) {
-
-    char* tmpBuff = new char[sizeof(int) + count];
-
-    *((int*)&tmpBuff[0]) = count;
-    memcpy(&tmpBuff[sizeof(int)], buffer, count);
+    *((int*)&sendTmpBuffer[0]) = count;
+    memcpy(&sendTmpBuffer[sizeof(int)], buffer, count);
     count += sizeof(int);
 
-    int bytesWritten = send(socketHandle, tmpBuff, count, MSG_NOSIGNAL);
+    int bytesWritten = send(socketHandle, sendTmpBuffer, count, MSG_NOSIGNAL);
 
-    delete[] tmpBuff;
-
-    // socket possibly borken
-    if (bytesWritten < 0) {
-        return false;
-    }
-
-    return true;
+    return bytesWritten >= 0;
 }
 
 int IO::ReadNextPackage(int socketHandle, char* buffer) {
-    char* sizeBuff = new char[sizeof(int)];
     int dataAvaible = 0;
 
     ioctl(socketHandle, FIONREAD, &dataAvaible);
     if (dataAvaible <= 0)
         return dataAvaible;
 
-    recv(socketHandle, sizeBuff, sizeof(int), 0);
-    int packageSize = *((int*)&sizeBuff[0]);
+    recv(socketHandle, recvHeaderBuffer, sizeof(int), 0);
+    int packageSize = *((int*)&recvHeaderBuffer[0]);
 
     // if package is empty
     if (packageSize == 0)
@@ -60,6 +51,5 @@ int IO::ReadNextPackage(int socketHandle, char* buffer) {
         bytesReaded += resultRead;
     }
 
-    delete[] sizeBuff;
     return packageSize;
 }

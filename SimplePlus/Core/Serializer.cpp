@@ -1,18 +1,18 @@
 #include "Serializer.h"
 
-int Serializer::ReadInt(const char *data, int *readCtx) {
+const int Serializer::ReadInt(const char *data, int *readCtx) {
   int val = *((int *)&data[*readCtx]);
   *readCtx += sizeof(int);
   return val;
 }
 
-float Serializer::ReadFloat(const char *data, int *readCtx) {
+const float Serializer::ReadFloat(const char *data, int *readCtx) {
   int val = *((float *)&data[*readCtx]);
   *readCtx += sizeof(float);
   return val;
 }
 
-double Serializer::ReadDouble(const char *data, int *readCtx) {
+const double Serializer::ReadDouble(const char *data, int *readCtx) {
   double val = *((double *)&data[*readCtx]);
   *readCtx += sizeof(double);
   return val;
