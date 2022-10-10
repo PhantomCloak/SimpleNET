@@ -8,7 +8,7 @@ Simple TCP library written in both C++ and C#, It's justly really thin wrapper b
 - Message framing
 
 ## For C#
-### Server Setup
+### [Server Setup](https://github.com/PhantomCloak/SimpleTCP/blob/master/SimpleNet/Example/Program.cs)
 ```csharp
 var server = new Server(22003);
 var clients = new List<Socket>();
@@ -52,7 +52,7 @@ clients.Clear();
 ```
 
 
-### Client Setup
+### [Client Setup](https://github.com/PhantomCloak/SimpleTCP/blob/master/SimpleNet/Example/Program.cs)
 ```csharp
 var client = new Client();
 
@@ -79,7 +79,7 @@ while (true)
 
 ```
 ## For C++
-### Server Setup
+### [Server Setup](https://github.com/PhantomCloak/SimpleTCP/blob/master/SimplePlus/Example/Server/main.cpp)
 ```cpp
 int main() {
   Server* server = new Server(22003);
@@ -120,7 +120,7 @@ int main() {
   clients.clear();
 }
 ```
-### Client Setup
+### [Client Setup](https://github.com/PhantomCloak/SimpleTCP/blob/master/SimplePlus/Example/Client/main.cpp)
 ```cpp
 int main() {
   Client *client = new Client();
