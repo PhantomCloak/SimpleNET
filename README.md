@@ -90,7 +90,7 @@ int main() {
     std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
     if (server->PollForConnection(&newClient)) {
-      printf("New Client Connected\n");
+      printf("New Client Connected: %s\n", Utils::GetSocketAddress(newClient));
       clients.push_back(newClient);
     }
 
@@ -98,7 +98,7 @@ int main() {
         [server](const int p) {
           bool status = server->CheckConnectionAlive(p);
           if (!status)
-            printf("Client has disconnected\n");
+            printf("Lost connection with client port: %d\n", Utils::GetSocketPort(client));
           return !status;
         }),
       clients.end());
