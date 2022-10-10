@@ -89,8 +89,8 @@ int main() {
   while (true) {
     std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
-    if (server -> PollForConnection(&newClient)) {
-      printf("New client connected\n");
+    if (server->PollForConnection(&newClient)) {
+      printf("New Client Connected\n");
       clients.push_back(newClient);
     }
 
