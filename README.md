@@ -95,8 +95,8 @@ int main() {
     }
 
     clients.erase(std::remove_if(clients.begin(), clients.end(),
-        [server](const int p) {
-          bool status = server->CheckConnectionAlive(p);
+        [server](const int client) {
+          bool status = server->CheckConnectionAlive(client);
           if (!status)
             printf("Lost connection with client port: %d\n", Utils::GetSocketPort(client));
           return !status;
