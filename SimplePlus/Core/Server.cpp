@@ -13,7 +13,7 @@ int Server::StartServer() {
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1) {
-        printf("socket creation failed...\n");
+        fprintf(stderr, "socket create failed: %s\n", strerror(errno));
         return -1;
     } else
         printf("Socket successfully created..\n");
@@ -24,14 +24,14 @@ int Server::StartServer() {
     servaddr.sin_port = htons(srvPort);
 
     if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
-        printf("socket bind failed...\n");
+        fprintf(stderr, "socket bind failed: %s\n", strerror(errno));
         close(sockfd);
         return -1;
     } else
         printf("Socket successfully binded..\n");
 
     if ((listen(sockfd, 5)) != 0) {
-        printf("Listen failed...\n");
+        fprintf(stderr, "socket listen failed: %s\n", strerror(errno));
         close(sockfd);
         return -1;
     } else

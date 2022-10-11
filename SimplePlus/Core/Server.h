@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <errno.h>
 #include "IO.h"
 
 #define sock_h int
