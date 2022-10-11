@@ -46,9 +46,17 @@ int Server::StartServer() {
     timeout.tv_usec = 0;
 
     setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(struct timeval));
+    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(struct timeval));
 
-    int buffersize = 2;
+    // low buffer size for keep alive packages
+    int buffersize = 4;
     setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &buffersize, 4);
+
+    int nonBlockResult = fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFL, 0) | O_NONBLOCK);
+
+    if (nonBlockResult == -1) {
+        fprintf(stderr, "an error occured while trying to set socket non-blocking %s\n", strerror(errno));
+    }
 
     return 0;
 }
