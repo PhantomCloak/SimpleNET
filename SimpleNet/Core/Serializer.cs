@@ -31,6 +31,7 @@ namespace SimpleNET
         {
             var len = ReadInt(buffer, ref readIndex);
             var value = Encoding.ASCII.GetString(buffer, readIndex, len);
+            readIndex += value.Length;
             return value;
         }
 
