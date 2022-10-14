@@ -7,6 +7,7 @@ const char* Utils::GetSocketAddress(int sock) {
 
     if (res < 0) {
         printf("an error occured during the GetSocketPort");
+        return NULL;
     }
 
     return inet_ntoa(addr.sin_addr);
