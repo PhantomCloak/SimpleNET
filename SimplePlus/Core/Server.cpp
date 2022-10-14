@@ -78,7 +78,6 @@ bool Server::PollForConnection(sock_h* newClient) {
         }
 
         if (fds[i].fd == sockfd) {
-            printf("Listening socket available\n");
             struct sockaddr_in cli;
             socklen_t len = sizeof(cli);
             *newClient = accept(sockfd, (struct sockaddr*)&cli, &len);
