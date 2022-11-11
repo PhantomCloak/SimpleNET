@@ -32,7 +32,7 @@ namespace SimpleNET
             var len = ReadInt(buffer, ref readIndex);
             var value = Encoding.ASCII.GetString(buffer, readIndex, len);
             readIndex += value.Length;
-            return value;
+            return value.Replace("\0", "");
         }
 
         public static void WriteInt(int value, ref byte[] buffer, ref int writeIndex)
@@ -58,6 +58,7 @@ namespace SimpleNET
 
         public static void WriteString(string value, ref byte[] buffer, ref int writeIndex)
         {
+            value += '\0';
             WriteInt(value.Length, ref buffer, ref writeIndex);
             var valBuf = Encoding.ASCII.GetBytes(value);
             Buffer.BlockCopy(valBuf, 0, buffer, writeIndex, valBuf.Length);
